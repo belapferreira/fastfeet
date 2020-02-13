@@ -12,4 +12,5 @@
 
 <p>No Bootcamp GoStack da Rocketseat existem vários desafios que fazem parte do Desafio Final em que é desenvolvida uma aplicação completa (Back-end, Front-end e Mobile) que é avaliada para emissão do Certificado.</p>
 
-<blockquote align="center">“Não espere para plantar, apenas tenha paciência para colher”!</blockquote>
+
+<blockquote align="center">“Acredite em você a cada passo”</blockquote>
