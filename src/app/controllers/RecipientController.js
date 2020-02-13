@@ -47,10 +47,10 @@ class RecipientController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { name } = req.body;
+    const { id } = req.body;
 
     const recipient = await Recipient.findOne({
-      where: { name: req.body.name },
+      where: { id },
     });
 
     if (!recipient) {
@@ -58,7 +58,7 @@ class RecipientController {
     }
 
     const {
-      id,
+      name,
       street,
       number,
       complement,
