@@ -31,6 +31,7 @@ class RecipientController {
 
   async update(req, res) {
     const schema = Yup.object().shape({
+      id: Yup.number().required(),
       name: Yup.string(),
       street: Yup.string().when('zipcode', (zipcode, field) =>
         zipcode ? field.required() : field
