@@ -105,9 +105,13 @@ class DeliveryController {
 
     const { id, recipient_id, deliveryman_id } = req.body;
 
-    const delivery = await Delivery.findOne({
+    const checkDeliveryExists = await Delivery.findOne({
       where: { id },
     });
+
+    if (!checkDeliveryExists) {
+      return res.status(400).json({ error: 'Delivery does not exist' });
+    }
 
     const checkRecipientExists = await Recipient.findOne({
       where: { id: recipient_id },
@@ -131,7 +135,7 @@ class DeliveryController {
       return res.status(400).json({ error: 'Deliveryman does not exist' });
     }
 
-    const { product } = await delivery.update(req.body);
+    const { product } = await checkDeliveryExists.update(req.body);
 
     return res.json({
       id,
