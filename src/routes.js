@@ -19,6 +19,12 @@ routes.post('/sessions', SessionController.store);
 
 routes.get('/deliveryman/deliveries', DeliveryManagerController.index);
 routes.get('/deliveryman/:id/deliveries', DeliveryManagerController.show);
+routes.put(
+  '/deliveryman/:deliveryman_id/deliveries',
+  DeliveryManagerController.update
+);
+
+routes.post('/files/signature', upload.single('file'), FileController.store);
 
 routes.use(authMiddleware);
 
