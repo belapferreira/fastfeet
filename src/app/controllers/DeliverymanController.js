@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Deliveryman from '../models/Deliveryman';
+import File from '../models/File';
 
 class DeliverymanController {
   // Deliveryman list
@@ -8,6 +9,13 @@ class DeliverymanController {
     const deliverymen = await Deliveryman.findAll({
       order: ['id'],
       attributes: ['id', 'name', 'email', 'avatar_id'],
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['name', 'path', 'url'],
+        },
+      ],
     });
 
     return res.json(deliverymen);
