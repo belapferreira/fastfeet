@@ -27,11 +27,11 @@ class DeliveryManagerController {
     }
     const { deliveryman_id } = req.body;
 
-    const checkDeliverymanExists = await Deliveryman.findOne({
+    const deliverymanExists = await Deliveryman.findOne({
       where: { id: req.body.deliveryman_id },
     });
 
-    if (!checkDeliverymanExists) {
+    if (!deliverymanExists) {
       return res.status(400).json({ error: 'Deliveryman does not exist' });
     }
 
@@ -64,11 +64,11 @@ class DeliveryManagerController {
   async show(req, res) {
     const { id } = req.params;
 
-    const checkDeliverymanExists = await Deliveryman.findOne({
+    const deliverymanExists = await Deliveryman.findOne({
       where: { id },
     });
 
-    if (!checkDeliverymanExists) {
+    if (!deliverymanExists) {
       return res.status(400).json({ error: 'Deliveryman does not exist' });
     }
     const deliveriesConcluded = await Delivery.findAll({
@@ -120,11 +120,11 @@ class DeliveryManagerController {
 
     const { id } = req.body;
 
-    const checkDeliveryExists = await Delivery.findOne({
+    const deliveryExists = await Delivery.findOne({
       where: { id },
     });
 
-    if (!checkDeliveryExists) {
+    if (!deliveryExists) {
       return res.status(400).json({ error: 'Delivery does not exist' });
     }
 
@@ -132,21 +132,21 @@ class DeliveryManagerController {
 
     const { deliveryman_id } = req.params;
 
-    const checkDeliverymanExists = await Deliveryman.findOne({
+    const deliverymanExists = await Deliveryman.findOne({
       where: { id: deliveryman_id },
     });
 
-    if (!checkDeliverymanExists) {
+    if (!deliverymanExists) {
       return res.status(400).json({ error: 'Deliveryman does not exist' });
     }
 
     // Check if delivery belongs deliveryman
 
-    const checkDeliveryBelongsDeliveryman = await Delivery.findOne({
+    const deliveryBelongsDeliveryman = await Delivery.findOne({
       where: { id, deliveryman_id },
     });
 
-    if (!checkDeliveryBelongsDeliveryman) {
+    if (!deliveryBelongsDeliveryman) {
       return res
         .status(400)
         .json({ error: 'Delivery does not belong deliveryman' });
