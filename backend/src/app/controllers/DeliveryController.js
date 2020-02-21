@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Delivery from '../models/Delivery';
+import File from '../models/File';
 import Recipient from '../models/Recipient';
 import Deliveryman from '../models/Deliveryman';
 
@@ -12,22 +13,29 @@ class DeliveryController {
   async index(req, res) {
     const deliveries = await Delivery.findAll({
       order: ['id'],
-      include: [
-        {
-          model: Deliveryman,
-          as: 'deliveryman',
-          attributes: ['name', 'email'],
-        },
-      ],
       attributes: [
         'id',
         'product',
-        'recipient_id',
-        'deliveryman_id',
-        'signature_id',
         'canceled_at',
         'start_date',
         'end_date',
+      ],
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name', 'email'],
+        },
+        {
+          model: File,
+          as: 'signature',
+          attributes: ['id', 'name', 'path', 'url'],
+        },
       ],
     });
 
