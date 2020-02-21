@@ -49,25 +49,25 @@ class DeliveryController {
 
     const { recipient_id, deliveryman_id } = req.body;
 
-    const checkRecipientExists = await Recipient.findOne({
+    const recipientExists = await Recipient.findOne({
       where: { id: recipient_id },
     });
 
-    const checkDeliverymanExists = await Deliveryman.findOne({
+    const deliverymanExists = await Deliveryman.findOne({
       where: { id: deliveryman_id },
     });
 
-    if (!checkRecipientExists && !checkDeliverymanExists) {
+    if (!recipientExists && !deliverymanExists) {
       return res
         .status(400)
         .json({ error: 'Recipient and Deliveryman do not exist' });
     }
 
-    if (!checkRecipientExists) {
+    if (!recipientExists) {
       return res.status(400).json({ error: 'Recipient does not exist' });
     }
 
-    if (!checkDeliverymanExists) {
+    if (!deliverymanExists) {
       return res.status(400).json({ error: 'Deliveryman does not exist' });
     }
 
@@ -76,8 +76,8 @@ class DeliveryController {
     // Send email to deliveryman who is responiable for delivery
 
     await Queue.add(OrderMail.key, {
-      checkDeliverymanExists,
-      checkRecipientExists,
+      deliverymanExists,
+      recipientExists,
       product,
     });
 
@@ -105,37 +105,37 @@ class DeliveryController {
 
     const { id, recipient_id, deliveryman_id } = req.body;
 
-    const checkDeliveryExists = await Delivery.findOne({
+    const deliveryExists = await Delivery.findOne({
       where: { id },
     });
 
-    if (!checkDeliveryExists) {
+    if (!deliveryExists) {
       return res.status(400).json({ error: 'Delivery does not exist' });
     }
 
-    const checkRecipientExists = await Recipient.findOne({
+    const recipientExists = await Recipient.findOne({
       where: { id: recipient_id },
     });
 
-    const checkDeliverymanExists = await Deliveryman.findOne({
+    const deliverymanExists = await Deliveryman.findOne({
       where: { id: deliveryman_id },
     });
 
-    if (!checkRecipientExists && !checkDeliverymanExists) {
+    if (!recipientExists && !deliverymanExists) {
       return res
         .status(400)
         .json({ error: 'Recipient and Deliveryman do not exist' });
     }
 
-    if (!checkRecipientExists) {
+    if (!recipientExists) {
       return res.status(400).json({ error: 'Recipient does not exist' });
     }
 
-    if (!checkDeliverymanExists) {
+    if (!deliverymanExists) {
       return res.status(400).json({ error: 'Deliveryman does not exist' });
     }
 
-    const { product } = await checkDeliveryExists.update(req.body);
+    const { product } = await deliveryExists.update(req.body);
 
     return res.json({
       id,

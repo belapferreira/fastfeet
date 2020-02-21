@@ -6,16 +6,16 @@ class OrderMail {
   }
 
   async handle({ data }) {
-    const { checkDeliverymanExists, checkRecipientExists, product } = data;
+    const { deliverymanExists, recipientExists, product } = data;
 
     await Mail.sendMail({
-      to: `${checkDeliverymanExists.name} <${checkDeliverymanExists.email}>`,
+      to: `${deliverymanExists.name} <${deliverymanExists.email}>`,
       subject: 'Delivery created',
       template: 'order',
       context: {
-        deliveryman: checkDeliverymanExists.name,
+        deliveryman: deliverymanExists.name,
         product,
-        recipient: checkRecipientExists.name,
+        recipient: recipientExists.name,
       },
     });
   }
