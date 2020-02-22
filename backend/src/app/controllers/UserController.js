@@ -2,6 +2,8 @@ import * as Yup from 'yup';
 import User from '../models/User';
 
 class UserController {
+  // Create recipient
+
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
@@ -16,6 +18,8 @@ class UserController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
+
+    // Check if user exists
 
     const userExists = await User.findOne({ where: { email: req.body.email } });
 
@@ -52,6 +56,8 @@ class UserController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
+    // Check if user exists
+
     const { email, oldPassword } = req.body;
 
     const user = await User.findByPk(req.userId);
@@ -63,6 +69,8 @@ class UserController {
         return res.status(400).json({ error: 'User already exists.' });
       }
     }
+
+    // Check if user password is correct
 
     if (oldPassword && !(await user.checkPassword(oldPassword))) {
       return res.status(401).json({ error: 'Password does not match' });

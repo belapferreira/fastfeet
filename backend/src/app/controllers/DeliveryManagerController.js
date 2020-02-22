@@ -15,7 +15,7 @@ import Recipient from '../models/Recipient';
 import Deliveryman from '../models/Deliveryman';
 
 class DeliveryManagerController {
-  // Delivery opened list by deliveryman id
+  // List deliveries opened by deliveryman id
 
   async index(req, res) {
     const schema = Yup.object().shape({
@@ -25,6 +25,11 @@ class DeliveryManagerController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
+
+    const { page = 1 } = req.query;
+
+    // Check if deliveryman exists
+
     const { deliveryman_id } = req.body;
 
     const deliverymanExists = await Deliveryman.findOne({
@@ -54,14 +59,20 @@ class DeliveryManagerController {
           ],
         },
       ],
+      limit: 10,
+      offset: (page - 1) * 10,
     });
 
     return res.json(deliveriesOpened);
   }
 
-  // Delivery concluded list by deliveryman id
+  // List deliveries concluded by deliveryman id
 
   async show(req, res) {
+    const { page = 1 } = req.query;
+
+    // Check if deliveryman exists
+
     const { id } = req.params;
 
     const deliverymanExists = await Deliveryman.findOne({
@@ -95,6 +106,8 @@ class DeliveryManagerController {
           ],
         },
       ],
+      limit: 10,
+      offset: (page - 1) * 10,
     });
 
     return res.json(deliveriesConcluded);

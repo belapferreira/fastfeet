@@ -5,6 +5,8 @@ import authConfig from '../../config/auth';
 import User from '../models/User';
 
 class SessionController {
+  // Create recipient
+
   async store(req, res) {
     const schema = Yup.object().shape({
       email: Yup.string()
@@ -17,6 +19,8 @@ class SessionController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
+    // Check if user exists
+
     const { email, password } = req.body;
 
     const user = await User.findOne({ where: { email } });
@@ -24,6 +28,8 @@ class SessionController {
     if (!user) {
       return res.status(401).json({ error: 'User not found' });
     }
+
+    // Check if user password is correct
 
     if (!(await user.checkPassword(password))) {
       return res.status(401).json({ error: 'Password does not match' });

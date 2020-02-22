@@ -8,9 +8,11 @@ import OrderMail from '../jobs/OrderMail';
 import Queue from '../../lib/Queue';
 
 class DeliveryController {
-  // Delivery list
+  // List deliveries
 
   async index(req, res) {
+    const { page = 1 } = req.query;
+
     const deliveries = await Delivery.findAll({
       order: ['id'],
       attributes: [
@@ -37,6 +39,8 @@ class DeliveryController {
           attributes: ['id', 'name', 'path', 'url'],
         },
       ],
+      limit: 10,
+      offset: (page - 1) * 10,
     });
 
     return res.json(deliveries);
@@ -54,6 +58,8 @@ class DeliveryController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
+
+    // Check if recipient and deliveryman exist
 
     const { recipient_id, deliveryman_id } = req.body;
 
@@ -81,7 +87,7 @@ class DeliveryController {
 
     const { id, product } = await Delivery.create(req.body);
 
-    // Send email to deliveryman who is responiable for delivery
+    // Send email to deliveryman who is responsable for delivery
 
     await Queue.add(OrderMail.key, {
       deliverymanExists,
@@ -111,6 +117,8 @@ class DeliveryController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
+    // Check if delivery exists
+
     const { id, recipient_id, deliveryman_id } = req.body;
 
     const deliveryExists = await Delivery.findOne({
@@ -120,6 +128,8 @@ class DeliveryController {
     if (!deliveryExists) {
       return res.status(400).json({ error: 'Delivery does not exist' });
     }
+
+    // Check if recipient and deliveryman exist
 
     const recipientExists = await Recipient.findOne({
       where: { id: recipient_id },
@@ -156,6 +166,8 @@ class DeliveryController {
   // Delete delivery
 
   async delete(req, res) {
+    // Check if delivery exists
+
     const { id } = req.params;
 
     const deliveryExists = await Delivery.findOne({

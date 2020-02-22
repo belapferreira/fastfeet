@@ -2,6 +2,8 @@ import * as Yup from 'yup';
 import Recipient from '../models/Recipient';
 
 class RecipientController {
+  // Create recipient
+
   async store(req, res) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
@@ -15,6 +17,8 @@ class RecipientController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
+
+    // Check if recipient exists
 
     const recipientExists = await Recipient.findOne({
       where: { name: req.body.name },
@@ -47,6 +51,8 @@ class RecipientController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
+
+    // Check if recipient exists
 
     const { id } = req.body;
 
