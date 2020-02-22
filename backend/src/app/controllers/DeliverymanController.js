@@ -3,9 +3,11 @@ import Deliveryman from '../models/Deliveryman';
 import File from '../models/File';
 
 class DeliverymanController {
-  // Deliveryman list
+  // List deliveryman
 
   async index(req, res) {
+    const { page = 1 } = req.query;
+
     const deliverymen = await Deliveryman.findAll({
       order: ['id'],
       attributes: ['id', 'name', 'email', 'avatar_id'],
@@ -16,6 +18,8 @@ class DeliverymanController {
           attributes: ['name', 'path', 'url'],
         },
       ],
+      limit: 10,
+      offset: (page - 1) * 10,
     });
 
     return res.json(deliverymen);
@@ -35,12 +39,14 @@ class DeliverymanController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
+    // Check if deliveryman exists
+
     const deliverymanExists = await Deliveryman.findOne({
       where: { email: req.body.email },
     });
 
     if (deliverymanExists) {
-      return res.status(400).json({ error: 'User already exists.' });
+      return res.status(400).json({ error: 'Deliveryman already exists.' });
     }
 
     const { name, email } = await Deliveryman.create(req.body);
@@ -63,6 +69,8 @@ class DeliverymanController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
+
+    // Check if deliveryman exists
 
     const { email, id } = req.body;
 
@@ -95,6 +103,8 @@ class DeliverymanController {
   // Delete deliveryman
 
   async delete(req, res) {
+    // Check if deliveryman exists
+
     const { id } = req.params;
 
     const deliverymanExists = await Deliveryman.findOne({

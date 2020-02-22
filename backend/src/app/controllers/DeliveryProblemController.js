@@ -10,9 +10,11 @@ import CancelationMail from '../jobs/CancelationMail';
 import Queue from '../../lib/Queue';
 
 class DeliveryProblemController {
-    // Deliveries problems list
+    // List deliveries problems
 
     async index(req, res) {
+      const { page = 1 } = req.query;
+
       const problems = await DeliveryProblem.findAll({
         order: ['id'],
         attributes: ['id', 'description', 'created_at'],
@@ -35,14 +37,20 @@ class DeliveryProblemController {
             ],
           },
         ],
+        limit: 10,
+        offset: (page - 1) * 10,
       });
 
       return res.json(problems);
     }
 
-// Delivery problems list by delivery id
+// List delivery problems by delivery id
 
     async show(req, res) {
+      const { page = 1 } = req.query;
+
+      // Check if delivery exists
+
       const { delivery_id } = req.params;
 
       const deliveryExists = await Delivery.findOne({
@@ -77,6 +85,8 @@ class DeliveryProblemController {
             ],
           },
         ],
+        limit: 10,
+        offset: (page - 1) * 10,
       });
 
       return res.json(deliveryProblems);
@@ -148,6 +158,8 @@ class DeliveryProblemController {
   // Delete delivery by id problem
 
   async delete(req, res) {
+    // Check if deliveryman exists
+
     const { id } = req.params;
 
     const deliveryProblemExists = await DeliveryProblem.findOne({
@@ -181,6 +193,8 @@ class DeliveryProblemController {
       ],
     });
 
+    // Check if delivery has been finished
+
     if (delivery.end_date !== null && delivery.signature_id !== null) {
       return res.status(400).json({ error: 'The delivery has been finished'});
     }
@@ -188,6 +202,8 @@ class DeliveryProblemController {
     delivery.canceled_at = new Date();
 
     await delivery.save();
+
+    // Send email to deliveryman who is responsable for delivery
 
     const deliveryId = delivery.id;
 
