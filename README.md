@@ -42,7 +42,6 @@ Esse projeto está está sendo desenvolvido no [RocketSeat GoStack Bootcamp](htt
 -  [Visual Studio Code](https://code.visualstudio.com/)
 -  [Insomnia](https://insomnia.rest/)
 -  [Mailtrap](https://mailtrap.io/)
--  [Sentry](https://sentry.io/)
 
 ### :memo: License
 Esse projeto está sob MIT license. Veja [LICENSE](https://github.com/lukemorales/gobarber-api/blob/master/LICENSE) para mais informações.
