@@ -10,6 +10,7 @@ import FileController from './app/controllers/FileController';
 import DeliveryController from './app/controllers/DeliveryController';
 import DeliveryManagerController from './app/controllers/DeliveryManagerController';
 import DeliveryProblemController from './app/controllers/DeliveryProblemController';
+import NotificationController from './app/controllers/NotificationController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -52,5 +53,8 @@ routes.delete('/deliveries/:id', DeliveryController.delete);
 routes.get('/delivery/problems', DeliveryProblemController.index);
 routes.get('/delivery/:delivery_id/problems', DeliveryProblemController.show);
 routes.delete('/problem/:id/cancel-delivery', DeliveryProblemController.delete);
+
+routes.get('/notifications', NotificationController.index);
+routes.put('/notifications/:id', NotificationController.update);
 
 export default routes;

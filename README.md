@@ -28,6 +28,8 @@ Esse projeto está está sendo desenvolvido no [RocketSeat GoStack Bootcamp](htt
 -  [PostgreSQL](https://www.postgresql.org/)
 -  [node-postgres](https://www.npmjs.com/package/pg)
 -  [Redis](https://redis.io/)
+-  [MongoDB](https://www.mongodb.com/)
+-  [Mongoose](https://mongoosejs.com/)
 -  [JWT](https://jwt.io/)
 -  [Multer](https://github.com/expressjs/multer)
 -  [Bcrypt](https://www.npmjs.com/package/bcrypt)
@@ -42,6 +44,7 @@ Esse projeto está está sendo desenvolvido no [RocketSeat GoStack Bootcamp](htt
 -  [Visual Studio Code](https://code.visualstudio.com/)
 -  [Insomnia](https://insomnia.rest/)
 -  [Mailtrap](https://mailtrap.io/)
+-  [Postbird](https://www.electronjs.org/apps/postbird)
 
 ### :memo: License
 Esse projeto está sob MIT license. Veja [LICENSE](https://github.com/lukemorales/gobarber-api/blob/master/LICENSE) para mais informações.
