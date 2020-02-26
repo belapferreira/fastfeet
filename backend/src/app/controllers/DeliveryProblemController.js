@@ -3,6 +3,8 @@ import Delivery from '../models/Delivery';
 import Deliveryman from '../models/Deliveryman';
 import DeliveryProblem from '../models/DeliveryProblem';
 import Recipient from '../models/Recipient';
+import User from '../models/User';
+import Notification from '../schemas/Notification';
 
 import CancelationMail from '../jobs/CancelationMail';
 import Queue from '../../lib/Queue';
@@ -148,6 +150,18 @@ class DeliveryProblemController {
       delivery_id,
       description,
       deliveryman_id,
+    });
+
+    // Notify administrator about delivery problem
+
+    const administrator = await User.findOne({
+      where: { administrator: true },
+      attributes: ['id']
+    });
+
+    await Notification.create({
+      content: `New delivery problem by ${deliverymanExists.name} for delivery ${delivery_id}`,
+      user: administrator.id,
     });
 
     return res.json(problem);
